@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Portfolio global reset — do NOT add overflow:hidden or height:100vh here */
+html {
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: clip;
+  /* NO overflow-y restriction — scroll MUST work */
+}
+
+#root {
+  min-height: 100vh;
+  /* NO height:100vh — that caps the page and blocks scrolling */
+}

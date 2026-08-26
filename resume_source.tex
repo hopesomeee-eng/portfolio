@@ -1,0 +1,108 @@
+\documentclass[11pt,a4paper,sans]{moderncv}
+
+% moderncv themes
+\moderncvstyle{classic}
+\moderncvcolor{blue}
+
+% character encoding
+\usepackage[utf8]{inputenc}
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue]{hyperref}
+\usepackage{xcolor}
+\usepackage{soul}
+
+% Define highlight colors
+\definecolor{highlight}{RGB}{255,235,59}
+\definecolor{success}{RGB}{76,175,80}
+
+% Custom highlight commands
+\newcommand{\highlight}[1]{\textbf{#1}}
+\newcommand{\success}[1]{\textcolor{black}{\textbf{#1}}}
+
+% adjust the page margins
+\usepackage[left=0.65in,top=0.55in,right=0.65in,bottom=0.65in]{geometry}
+
+% personal data
+\name{Sushant}{Kumar}
+\title{Full Stack Engineer | Mobile \& Agentic AI}
+\address{Moradabad, Uttar Pradesh, India}
+\phone[mobile]{+91 9690286930}
+\email{sushant18072002@gmail.com}
+\social[linkedin]{connect-with-sushant}
+\social[github]{sushant18072002}
+
+\begin{document}
+
+\makecvtitle
+\vspace{-2em} 
+
+\section{Professional Summary}
+Full Stack Engineer with \highlight{3+ years of experience} architecting and scaling cross-platform mobile applications, backend microservices, and high-performance WebGL interfaces. Built \highlight{8+ production systems} serving \success{200,000+ active users} with \success{99.5\% crash-free sessions}. Specialized in offline-first mobile architectures, high-throughput backend APIs (Go/Node.js), and \highlight{Agentic AI Orchestration} using the Model Context Protocol (MCP) and Vector databases. Strong background in government-scale platforms requiring strict data security, hardware integrations, and end-to-end execution from the database layer to the React/Flutter UI.
+
+\section{Technical Skills}
+\cvitem{Frontend \& Web}{{React}, {TypeScript}, {Three.js}, WebGL, Framer Motion, Tailwind}
+\cvitem{Mobile Development}{{Flutter 3.x}, {Dart 3.x}, Android/iOS Native Channels, GetX, flutter\_bloc}
+\cvitem{Backend Integration}{{Node.js}, {Go}, REST APIs, GraphQL, WebSocket, gRPC}
+\cvitem{Agentic AI \& Data}{{LangChain}, {Model Context Protocol (MCP)}, Pinecone, PostgreSQL, SQLite}
+\cvitem{Architecture}{Microservices, Offline-First Sync, Clean Architecture, Dependency Injection}
+\cvitem{DevOps \& Tools}{{GitHub Actions}, Docker, Firebase, Figma, Linux}
+
+\section{Professional Experience}
+\cventry{August 2022--Present}{Software Engineer}{Manprax Software}{New Delhi, India}{}{
+\begin{itemize}
+\item Architected and deployed \highlight{8 end-to-end production systems} serving \success{200,000+ active users} across government and education sectors, handling both backend orchestration and frontend/mobile delivery.
+\item Built offline-first data pipelines syncing massive SQLite payloads from low-end mobile devices to secure backend servers, ensuring zero data loss during network failures in remote areas.
+\item Cut API payload sizes and improved screen load times by \success{35\%} across the stack by implementing intelligent request batching, payload compression, and Dart isolates for heavy JSON parsing.
+\item Engineered an \highlight{Agentic AI voice-to-JSON routing pipeline}, where user speech is processed via OpenAI and mapped dynamically to complex nested application states.
+\item Developed high-performance web and mobile interfaces using strict design systems, incorporating WebGL and custom animations for FANG-tier user experiences.
+\item Set up CI/CD pipelines via GitHub Actions to automate backend deployments and APK/IPA distribution.
+\end{itemize}}
+
+\section{Key Projects}
+
+\subsection{Agentic Architecture \& Portfolio V4}
+\cvitem{Tech Stack}{{React, WebGL, Three.js, Framer Motion, Model Context Protocol (MCP)}}
+\cvitem{Achievements}{
+\begin{itemize}
+\item Engineered a FANG-tier interactive portfolio utilizing \highlight{WebGL and Three.js} for immersive 3D rendering, paired with advanced Framer Motion animations for a premium user experience.
+\item Built a dynamic, zero-hardcode \highlight{Agentic Architecture visualization system} utilizing \texttt{ResizeObserver} to mathematically draw real-time SVG data flows between HTML nodes, showcasing edge-to-database traffic.
+\item Integrated Model Context Protocol (MCP) concepts to demonstrate advanced AI orchestration capabilities bridging traditional microservices with autonomous agent workflows.
+\end{itemize}}
+
+\subsection{ShikshaMP - Government Education Platform}
+\cvitem{Tech Stack}{{Flutter, Node.js, WebSocket, SQLite, PostgreSQL, flutter\_secure\_storage}}
+\cvitem{Achievements}{
+\begin{itemize}
+\item Built a full-stack \highlight{offline-first data collection system} used by 80,000+ government officials to inspect schools in remote areas with zero connectivity.
+\item Engineered a robust background synchronization engine that stores hundreds of assessment forms locally and batches uploads via REST when the network returns, reconciling data securely with the PostgreSQL backend.
+\item Encrypted all local assessment data at rest to meet strict government compliance standards.
+\end{itemize}}
+
+\subsection{Subodha - AI-Powered Accessible E-Learning}
+\cvitem{Tech Stack}{{Flutter, Python, OpenAI API, flutter\_tts, speech\_to\_text}}
+\cvitem{Achievements}{
+\begin{itemize}
+\item Architected an \highlight{accessible, voice-driven e-learning platform} for visually impaired students across PWD department schools.
+\item Built a \highlight{voice-to-JSON AI routing pipeline}: user voice input is sent to a backend AI orchestrator, which returns a structured JSON schema that the client executes to deep-link directly to the desired chapter.
+\item Maintained 100\% WCAG 2.1 AA screen-reader compliance through explicit semantics and custom UI components.
+\end{itemize}}
+
+\subsection{Kitab Vitran - Supply Chain Management}
+\cvitem{Tech Stack}{{Flutter, Go, PostgreSQL, Hive, GitHub Actions}}
+\cvitem{Achievements}{
+\begin{itemize}
+\item Delivered a full-stack \highlight{hardware-integrated QR scanning platform} to verify the chain-of-custody for \success{2M+ textbooks} across \success{10,000+ schools}.
+\item Optimized client-side camera memory usage for low-end Android devices and scaled the backend to handle massive concurrent scan events during peak distribution hours.
+\end{itemize}}
+
+\section{Education}
+\cventry{2018--2022}{Bachelor of Technology in Computer Science}{Moradabad Institute of Technology}{Moradabad, India}{\success{CGPA: 8.2/10}}{
+\begin{itemize}
+\item Relevant Coursework: Software Architecture, Database Management Systems, Distributed Systems, AI
+\item Capstone Project: Cross-platform social networking application (\success{95\% evaluation score})
+\end{itemize}}
+
+\section{Professional Impact}
+\cvitem{Technical Leadership}{Led full-stack architecture decisions across government projects impacting \success{500,000+ citizens}}
+\cvitem{Mentorship}{Guided \success{3 junior developers} in clean architecture, API design, and reactive UI principles}
+
+\end{document}
