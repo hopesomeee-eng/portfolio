@@ -9,6 +9,10 @@ interface PortfolioStore {
   setBloomIntensity: (v: number) => void
   isLoaded: boolean
   setIsLoaded: (v: boolean) => void
+  isResumeOpen: boolean
+  setResumeOpen: (v: boolean) => void
+  performanceMode: 'auto' | 'eco' | 'cinematic'
+  setPerformanceMode: (mode: 'auto' | 'eco' | 'cinematic') => void
 }
 
 export const usePortfolioStore = create<PortfolioStore>((set) => ({
@@ -20,4 +24,8 @@ export const usePortfolioStore = create<PortfolioStore>((set) => ({
   setBloomIntensity: (v) => set({ bloomIntensity: v }),
   isLoaded: false,
   setIsLoaded: (v) => set({ isLoaded: v }),
+  isResumeOpen: false,
+  setResumeOpen: (v) => set({ isResumeOpen: v }),
+  performanceMode: 'auto',
+  setPerformanceMode: (mode) => set({ performanceMode: mode }),
 }))

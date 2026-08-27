@@ -1,4 +1,4 @@
-﻿/**
+/**
  * NavBar.tsx
  *
  * Fixed top navigation — dark frosted glass.
@@ -7,6 +7,7 @@
  */
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { usePortfolioStore } from '../store'
 
 const LINKS = [
   { label: 'About',    href: '#about' },
@@ -20,6 +21,7 @@ export function NavBar() {
   const [scrolled, setScrolled]     = useState(false)
   const [activeSection, setActive]  = useState('')
   const [menuOpen, setMenuOpen]     = useState(false)
+  const { setResumeOpen }           = usePortfolioStore()
 
   useEffect(() => {
     const onScroll = () => {
@@ -141,10 +143,8 @@ export function NavBar() {
         })}
 
         {/* Resume CTA */}
-        <a
-          href="/resume.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          onClick={() => setResumeOpen(true)}
           data-cursor="cta"
           style={{
             marginLeft: '0.75rem',
@@ -170,7 +170,7 @@ export function NavBar() {
           }}
         >
           Resume
-        </a>
+        </button>
       </nav>
 
       {/* Mobile hamburger */}

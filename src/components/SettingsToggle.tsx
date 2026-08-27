@@ -1,4 +1,4 @@
-﻿/**
+/**
  * SettingsToggle.tsx
  *
  * Floating ⚙ button (top-right) that opens a small panel
@@ -11,6 +11,7 @@
  */
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { usePortfolioStore } from '../store'
 
 interface Settings {
   showCards:     boolean
@@ -40,6 +41,7 @@ export const settingsStore = {
 export function SettingsToggle() {
   const [open, setOpen]         = useState(false)
   const [settings, setSettings] = useState<Settings>(loadSettings)
+  const { performanceMode, setPerformanceMode } = usePortfolioStore()
 
   const update = (patch: Partial<Settings>) => {
     const next = { ...settings, ...patch }
@@ -130,6 +132,27 @@ export function SettingsToggle() {
             }}
           >
             <p style={{ fontSize: '9px', letterSpacing: '0.2em', color: '#f59e0b', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', fontWeight: 700, marginBottom: '0.75rem' }}>
+              System
+            </p>
+            <div style={{ padding: '0.6rem 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+              <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.55)', fontFamily: 'Inter, sans-serif', marginBottom: '0.5rem' }}>Performance Mode</div>
+              <div style={{ display: 'flex', gap: '6px' }}>
+                {(['auto', 'eco', 'cinematic'] as const).map(mode => (
+                  <button key={mode} onClick={() => setPerformanceMode(mode)} data-cursor="link"
+                    style={{
+                      flex: 1, padding: '4px', borderRadius: '6px', cursor: 'none', border: 'none',
+                      fontSize: '9px', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase',
+                      fontFamily: 'Inter, sans-serif',
+                      background: performanceMode === mode ? '#f59e0b' : 'rgba(255,255,255,0.06)',
+                      color: performanceMode === mode ? '#09090b' : 'rgba(255,255,255,0.4)',
+                      transition: 'background 0.15s, color 0.15s',
+                    }}
+                  >{mode}</button>
+                ))}
+              </div>
+            </div>
+            
+            <p style={{ fontSize: '9px', letterSpacing: '0.2em', color: '#f59e0b', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', fontWeight: 700, marginTop: '1rem', marginBottom: '0.75rem' }}>
               Display
             </p>
             <Row label="Overlay cards">

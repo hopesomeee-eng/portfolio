@@ -6,11 +6,13 @@
  */
 import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { usePortfolioStore } from '../store'
 
 export function ContactSection() {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-20%' })
   const [copied, setCopied] = useState(false)
+  const { setResumeOpen } = usePortfolioStore()
 
   const copyEmail = () => {
     navigator.clipboard.writeText('sushantkumar1807@gmail.com')
@@ -87,7 +89,7 @@ export function ContactSection() {
               className="contact-socials"
               style={{ marginTop: 'var(--space-section)', fontSize: '13px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}
             >
-              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" style={{ color: '#f59e0b', textDecoration: 'none', minHeight: 'var(--tap-target-min)', display: 'flex', alignItems: 'center' }} data-cursor="link">Resume</a>
+              <button onClick={() => setResumeOpen(true)} style={{ background: 'none', border: 'none', padding: 0, color: '#f59e0b', textDecoration: 'none', minHeight: 'var(--tap-target-min)', display: 'flex', alignItems: 'center', cursor: 'pointer', fontFamily: 'inherit', fontSize: 'inherit', fontWeight: 'inherit', letterSpacing: 'inherit', textTransform: 'inherit' }} data-cursor="link">Resume</button>
               <a href="https://github.com/sushantkumar1807" target="_blank" rel="noopener noreferrer" style={{ color: '#fafafa', textDecoration: 'none', minHeight: 'var(--tap-target-min)', display: 'flex', alignItems: 'center' }} data-cursor="link">GitHub</a>
               <a href="https://www.linkedin.com/in/connect-with-sushant/" target="_blank" rel="noopener noreferrer" style={{ color: '#fafafa', textDecoration: 'none', minHeight: 'var(--tap-target-min)', display: 'flex', alignItems: 'center' }} data-cursor="link">LinkedIn</a>
               <a href="https://medium.com/@sushantkumar1807" target="_blank" rel="noopener noreferrer" style={{ color: '#fafafa', textDecoration: 'none', minHeight: 'var(--tap-target-min)', display: 'flex', alignItems: 'center' }} data-cursor="link">Medium</a>

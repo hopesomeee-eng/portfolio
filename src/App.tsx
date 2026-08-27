@@ -13,8 +13,9 @@
  * It lives only inside the hero section.
  * Below the hero, regular dark HTML sections take over.
  */
-import { useEffect, useRef, Suspense } from 'react'
+import { useEffect, useRef, Suspense, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
+import { PerformanceMonitor } from '@react-three/drei'
 import Lenis from '@studio-freight/lenis'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -30,6 +31,7 @@ import { SectionNav }       from './components/SectionNav'
 import { ScrollOverlay }    from './components/ScrollOverlay'
 import { SettingsToggle }   from './components/SettingsToggle'
 import { ReloadPrompt }     from './components/ReloadPrompt'
+import { ResumeViewer }     from './components/ResumeViewer'
 
 // HTML sections
 import { AboutSection }       from './components/AboutSection'
@@ -46,8 +48,9 @@ import './style.css'
 gsap.registerPlugin(ScrollTrigger)
 
 export default function App() {
-  const { isLoaded, setIsLoaded } = usePortfolioStore()
+  const { isLoaded, setIsLoaded, performanceMode, setPerformanceMode } = usePortfolioStore()
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
+  const [isHeroVisible, setIsHeroVisible] = useState(true)
 
   // Track mouse position (raw pixels — passed to 3D scene)
   useEffect(() => {
@@ -93,6 +96,17 @@ export default function App() {
     return () => clearTimeout(timer)
   }, [setIsLoaded])
 
+  // Optimization: Pause expensive WebGL rendering when hero is out of view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsHeroVisible(entry.isIntersecting),
+      { threshold: 0 }
+    )
+    const hero = document.getElementById('hero')
+    if (hero) observer.observe(hero)
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <div className="portfolio-root">
       {/* Fixed overlays */}
@@ -111,17 +125,25 @@ export default function App() {
         {/* R3F Canvas — fills the hero section */}
         {/* pointer-events: none so wheel events pass through to Lenis/page */}
         <div className="hero-canvas-wrapper" style={{ pointerEvents: 'none' }}>
-          <Canvas
-            orthographic
-            camera={{ position: [0, 0, 1], zoom: 1 }}
-            dpr={[1, 1.5]}
-            gl={{ antialias: false, powerPreference: 'high-performance' }}
-            onCreated={() => setIsLoaded(true)}
+          <PerformanceMonitor 
+            onDecline={() => setPerformanceMode('eco')}
+            onIncline={() => setPerformanceMode('cinematic')}
+            flipflops={3}
+            onFallback={() => setPerformanceMode('eco')}
           >
-            <Suspense fallback={null}>
-              <CinematicHero mouseRef={mouseRef} />
-            </Suspense>
-          </Canvas>
+            <Canvas
+              frameloop={isHeroVisible ? 'always' : 'demand'}
+              orthographic
+              camera={{ position: [0, 0, 1], zoom: 1 }}
+              dpr={performanceMode === 'eco' ? [1, 1] : [1, 2]}
+              gl={{ antialias: false, powerPreference: 'high-performance' }}
+              onCreated={() => setIsLoaded(true)}
+            >
+              <Suspense fallback={null}>
+                <CinematicHero mouseRef={mouseRef} />
+              </Suspense>
+            </Canvas>
+          </PerformanceMonitor>
         </div>
 
         {/* Hero text overlay — bottom-left, compact */}
@@ -144,6 +166,9 @@ export default function App() {
 
       {/* Loading screen — fades out after hero is ready */}
       <LoadingScreen isLoaded={isLoaded} />
+
+      {/* Full screen overlays */}
+      <ResumeViewer />
     </div>
   )
 }

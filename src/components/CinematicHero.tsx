@@ -11,6 +11,7 @@ import { useRef, useMemo } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { HeroConfig } from '../config/HeroConfig'
+import { usePortfolioStore } from '../store'
 
 const vertexShader = `
   varying vec2 vUv;
@@ -21,7 +22,9 @@ const vertexShader = `
 `
 
 // Fragment shader implementing fBm domain warping for the "Silky Void" effect
-const fragmentShader = `
+const getFragmentShader = (mode: 'auto' | 'eco' | 'cinematic') => `
+  #define OCTAVES ${mode === 'eco' ? '2' : '5'}
+
   uniform vec2 uMouse;
   uniform float uTime;
   uniform vec2 uResolution;
@@ -66,7 +69,7 @@ const fragmentShader = `
     vec2 shift = vec2(100.0);
     // Rotate to reduce axial bias
     mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.50));
-    for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i < OCTAVES; ++i) {
       v += a * snoise(x);
       x = rot * x * 2.0 + shift;
       a *= 0.5;
@@ -117,6 +120,7 @@ export function CinematicHero({ mouseRef }: CinematicHeroProps) {
   const meshRef = useRef<THREE.Mesh>(null)
   const matRef = useRef<THREE.ShaderMaterial>(null)
   const { viewport, size } = useThree()
+  const { performanceMode } = usePortfolioStore()
 
   // Parse hex to normalized RGB for shader
   const parseHex = (hex: string) => {
@@ -167,7 +171,7 @@ export function CinematicHero({ mouseRef }: CinematicHeroProps) {
       <shaderMaterial
         ref={matRef}
         vertexShader={vertexShader}
-        fragmentShader={fragmentShader}
+        fragmentShader={getFragmentShader(performanceMode)}
         uniforms={uniforms}
         transparent
       />
