@@ -46,11 +46,11 @@ export function ArchitectureSection() {
     if (!containerRef.current) return
     const containerRect = containerRef.current.getBoundingClientRect()
     
-    const newPaths = activeArch.connections.map(conn => {
+    activeArch.connections.forEach(conn => {
       const sourceEl = nodeRefs.current.get(conn.source)
       const targetEl = nodeRefs.current.get(conn.target)
       
-      if (!sourceEl || !targetEl) return null
+      if (!sourceEl || !targetEl) return
 
       const sRect = sourceEl.getBoundingClientRect()
       const tRect = targetEl.getBoundingClientRect()
