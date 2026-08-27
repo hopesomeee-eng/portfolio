@@ -14,11 +14,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { usePortfolioStore } from '../store'
 
 interface Settings {
-  showCards:     boolean
-  particleLevel: 'full' | 'reduced' | 'off'
+  showCards: boolean
 }
 
-const DEFAULT_SETTINGS: Settings = { showCards: true, particleLevel: 'full' }
+const DEFAULT_SETTINGS: Settings = { showCards: true }
 const STORAGE_KEY = 'portfolio-settings'
 
 function loadSettings(): Settings {
@@ -158,23 +157,6 @@ export function SettingsToggle() {
             <Row label="Overlay cards">
               <Toggle value={settings.showCards} onChange={v => update({ showCards: v })} />
             </Row>
-            <div style={{ padding: '0.6rem 0' }}>
-              <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.55)', fontFamily: 'Inter, sans-serif', marginBottom: '0.5rem' }}>Particles</div>
-              <div style={{ display: 'flex', gap: '6px' }}>
-                {(['full', 'reduced', 'off'] as const).map(level => (
-                  <button key={level} onClick={() => update({ particleLevel: level })} data-cursor="link"
-                    style={{
-                      flex: 1, padding: '4px', borderRadius: '6px', cursor: 'none', border: 'none',
-                      fontSize: '9px', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase',
-                      fontFamily: 'Inter, sans-serif',
-                      background: settings.particleLevel === level ? '#f59e0b' : 'rgba(255,255,255,0.06)',
-                      color: settings.particleLevel === level ? '#09090b' : 'rgba(255,255,255,0.4)',
-                      transition: 'background 0.15s, color 0.15s',
-                    }}
-                  >{level}</button>
-                ))}
-              </div>
-            </div>
           </motion.div>
         )}
       </AnimatePresence>

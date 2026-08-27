@@ -67,10 +67,22 @@ export function ArchitectureSection() {
     setPaths(newPaths)
   }, [activeArch])
 
-  // Use ResizeObserver for perfect tracking without polling
+  // Use ResizeObserver and a high-frequency tracking loop for perfect SVG syncing
   useLayoutEffect(() => {
-    // Wait a microtask for DOM nodes to mount when activeArch changes
-    const timer = setTimeout(updatePaths, 50)
+    let animationFrameId: number
+    const startTime = performance.now()
+
+    // High-frequency loop to perfectly track framer-motion CSS transform animations
+    const trackAnimation = (time: number) => {
+      updatePaths()
+      
+      // Run at 60FPS for 1.5s (duration of the spring entry/exit animation)
+      if (time - startTime < 1500) {
+        animationFrameId = requestAnimationFrame(trackAnimation)
+      }
+    }
+
+    animationFrameId = requestAnimationFrame(trackAnimation)
 
     const observer = new ResizeObserver(() => {
       requestAnimationFrame(updatePaths)
@@ -83,11 +95,11 @@ export function ArchitectureSection() {
     window.addEventListener('resize', updatePaths)
     
     return () => {
-      clearTimeout(timer)
+      cancelAnimationFrame(animationFrameId)
       observer.disconnect()
       window.removeEventListener('resize', updatePaths)
     }
-  }, [updatePaths, activeId]) // Re-bind observer on ID change
+  }, [updatePaths, activeId])
 
   // Group nodes by layer for layout
   const maxLayer = Math.max(...activeArch.nodes.map(n => n.layer))

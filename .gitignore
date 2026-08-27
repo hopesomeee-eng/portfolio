@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 .reference/
 package-lock.json
+postgresql_linkedin_image_card.html
