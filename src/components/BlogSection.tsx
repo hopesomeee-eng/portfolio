@@ -127,26 +127,29 @@ export function BlogSection() {
   const inView = useInView(ref, { once: true, margin: '-20%' })
 
   useEffect(() => {
-    // Try to fetch live. Fallback is already set.
+    // Switch from allorigins to rss2json to prevent CORS blocks and parse JSON natively
     const RSS_URL   = 'https://medium.com/feed/@sushantkumar1807'
-    const PROXY_URL = `https://api.allorigins.win/get?url=${encodeURIComponent(RSS_URL)}`
+    const PROXY_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}`
+    
     fetch(PROXY_URL)
       .then(r => r.json())
       .then(data => {
-        const parser  = new DOMParser()
-        const doc     = parser.parseFromString(data.contents, 'text/xml')
-        const items   = Array.from(doc.querySelectorAll('item')).slice(0, 3)
-        if (items.length === 0) return
-        const parsed  = items.map(item => ({
-          title:      item.querySelector('title')?.textContent?.replace(/<!\[CDATA\[|\]\]>/g, '').trim() ?? '',
-          link:       item.querySelector('link')?.textContent?.trim() ?? '#',
-          pubDate:    new Date(item.querySelector('pubDate')?.textContent ?? '').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
-          categories: Array.from(item.querySelectorAll('category')).map(c => c.textContent?.replace(/<!\[CDATA\[|\]\]>/g, '').trim() ?? '').filter(Boolean),
-          readTime:   '~8 min',
+        if (data.status !== 'ok' || !data.items || data.items.length === 0) return
+        
+        const parsed = data.items.slice(0, 3).map((item: any) => ({
+          title: item.title,
+          link: item.link,
+          // Extract just the Date from "YYYY-MM-DD HH:MM:SS" string if it exists
+          pubDate: new Date(item.pubDate.replace(' ', 'T')).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+          categories: item.categories || [],
+          readTime: '~8 min',
         }))
+        
         setArticles(parsed)
       })
-      .catch(() => { /* keep fallback */ })
+      .catch((err) => { 
+        console.warn('Medium RSS fetch failed, falling back to static:', err) 
+      })
   }, [])
 
   return (
