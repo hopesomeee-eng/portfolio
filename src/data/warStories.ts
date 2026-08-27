@@ -72,7 +72,7 @@ I had to build a voice controller that understood both — and 7 other Indian la
     content: `## Sushant Kumar
 
 **Senior Flutter Developer & AI Infrastructure Architect**
-*3+ Years Experience | 8+ Apps | 200,000+ Users*
+*4 Years Experience | 8+ Apps | 200,000+ Users*
 
 Specializing in scalable architecture patterns, state management, and enterprise-grade security implementations. 
 Bridging the gap between hyper-optimized mobile clients (Flutter) and autonomous agent infrastructure (MCP).`

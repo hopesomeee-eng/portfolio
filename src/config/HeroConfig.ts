@@ -12,7 +12,7 @@ export const HeroConfig = {
     tagline: "You envision. I engineer. Translating abstract imagination into autonomous reality.",
     stats: [
       { value: "2,00,000+", label: "DAILY USERS" },
-      { value: "5+", label: "YEARS PROD." },
+      { value: "4", label: "YEARS PROD." },
       { value: "3", label: "MCP SERVERS" }
     ],
     ctas: [
