@@ -29,6 +29,7 @@ import { LoadingScreen }    from './components/LoadingScreen'
 import { SectionNav }       from './components/SectionNav'
 import { ScrollOverlay }    from './components/ScrollOverlay'
 import { SettingsToggle }   from './components/SettingsToggle'
+import { ReloadPrompt }     from './components/ReloadPrompt'
 
 // HTML sections
 import { AboutSection }       from './components/AboutSection'
@@ -97,6 +98,7 @@ export default function App() {
       {/* Fixed overlays */}
       <CursorGlow />
       <NavBar />
+      <ReloadPrompt />
       {isLoaded && <SectionNav />}
       {isLoaded && <SettingsToggle />}
 
