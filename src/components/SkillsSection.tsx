@@ -25,11 +25,11 @@ export function SkillsSection() {
   }
 
   return (
-    <section id="skills" style={{ padding: '15vh 0', background: '#09090b', position: 'relative', zIndex: 10 }}>
+    <section id="skills" style={{ padding: 'var(--space-section) 0', background: '#09090b', position: 'relative', zIndex: 10 }}>
       <div className="swiss-grid" ref={ref}>
         
         {/* Header */}
-        <div className="swiss-block-wide" style={{ marginBottom: '4rem' }}>
+        <div className="swiss-block-wide" style={{ marginBottom: 'var(--space-element)' }}>
           <motion.p
             initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}}
             className="swiss-label"

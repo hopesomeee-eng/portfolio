@@ -18,22 +18,22 @@ interface Article {
 // Hardcoded fallback
 const FALLBACK_ARTICLES: Article[] = [
   {
-    title: 'The Two-Layer Heresy: Why Senior Flutter Developers Are Deleting the Domain Layer',
-    link:  'https://medium.com/@sushant18072002/the-two-layer-heresy-why-senior-flutter-developers-are-deleting-the-domain-layer-d412ece43117',
-    pubDate: 'Aug 23, 2026',
-    categories: ['Flutter', 'Architecture'],
+    title: 'The Death of Micro-Optimizations: Why Senior Flutter Developers Prioritize State Ownership in 2026',
+    link:  'https://medium.com/@sushantkumar1807/the-death-of-micro-optimizations-why-senior-flutter-developers-prioritize-state-ownership-in-2026-a14078a8c7f0',
+    pubDate: 'Aug 27, 2026',
+    categories: ['Flutter', 'State Management'],
     readTime: '8 min',
   },
   {
     title: 'Stop Using GitHub Copilot Like a Junior Developer (The 2026 Setup)',
-    link:  'https://medium.com/@sushant18072002/i-used-github-copilot-wrong-for-a-year-heres-what-finally-made-it-click-31fd584a5657',
+    link:  'https://medium.com/@sushantkumar1807/i-used-github-copilot-wrong-for-a-year-heres-what-finally-made-it-click-31fd584a5657',
     pubDate: 'Apr 26, 2026',
     categories: ['AI', 'GitHub Copilot'],
     readTime: '10 min',
   },
   {
     title: "I Killed 188 Skipped Frames in My Flutter App. Here\u2019s the Autopsy",
-    link:  'https://medium.com/@sushant18072002/i-killed-188-skipped-frames-in-my-flutter-app-heres-the-autopsy-f507fda31c98',
+    link:  'https://medium.com/@sushantkumar1807/i-killed-188-skipped-frames-in-my-flutter-app-heres-the-autopsy-f507fda31c98',
     pubDate: 'Earlier 2026',
     categories: ['Flutter', 'Performance'],
     readTime: '12 min',
@@ -128,7 +128,7 @@ export function BlogSection() {
 
   useEffect(() => {
     // Try to fetch live. Fallback is already set.
-    const RSS_URL   = 'https://medium.com/feed/@sushant18072002'
+    const RSS_URL   = 'https://medium.com/feed/@sushantkumar1807'
     const PROXY_URL = `https://api.allorigins.win/get?url=${encodeURIComponent(RSS_URL)}`
     fetch(PROXY_URL)
       .then(r => r.json())
@@ -150,10 +150,10 @@ export function BlogSection() {
   }, [])
 
   return (
-    <section id="blog" style={{ padding: '15vh 0', background: '#09090b', position: 'relative', zIndex: 10 }}>
+    <section id="blog" style={{ padding: 'var(--space-section) 0', background: '#09090b', position: 'relative', zIndex: 10 }}>
       <div className="swiss-grid" ref={ref}>
 
-        <div className="swiss-block-wide mobile-header-row" style={{ marginBottom: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <div className="swiss-block-wide mobile-header-row" style={{ marginBottom: 'var(--space-element)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
           <div>
             <motion.p 
               initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -170,7 +170,7 @@ export function BlogSection() {
           </div>
           <motion.a 
             initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.2 }}
-            href="https://medium.com/@sushant18072002" target="_blank" rel="noopener noreferrer"
+            href="https://medium.com/@sushantkumar1807" target="_blank" rel="noopener noreferrer"
             data-cursor="link"
             style={{ fontSize: '11px', color: '#f59e0b', textDecoration: 'none', fontFamily: 'Inter, sans-serif', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}
           >

@@ -132,11 +132,14 @@ export function CinematicHero({ mouseRef }: CinematicHeroProps) {
     uFluidColor: { value: parseHex(HeroConfig.shader.fluidColor) }
   }), [size])
 
-  useFrame((state) => {
+  const timeRef = useRef(0)
+
+  useFrame((state, delta) => {
     if (!matRef.current) return
 
-    // Time scaling for smooth fluid motion
-    matRef.current.uniforms.uTime.value = state.clock.elapsedTime * HeroConfig.shader.speed
+    // Time scaling for smooth fluid motion (avoiding deprecated THREE.Clock)
+    timeRef.current += delta
+    matRef.current.uniforms.uTime.value = timeRef.current * HeroConfig.shader.speed
 
     // Update resolution on resize
     matRef.current.uniforms.uResolution.value.set(state.size.width, state.size.height)

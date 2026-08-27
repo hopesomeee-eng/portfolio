@@ -2,7 +2,7 @@ import { useRegisterSW } from 'virtual:pwa-register/react'
 
 export function ReloadPrompt() {
   const {
-    needRefresh: [needRefresh, setNeedRefresh],
+    needRefresh: [needRefresh],
     updateServiceWorker,
   } = useRegisterSW({
     onRegistered(r) {

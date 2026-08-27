@@ -120,9 +120,9 @@ export function ArchitectureSection() {
   const layers = [0, 1, 2, 3].map(layerIdx => ARCH_NODES.filter(n => n.layer === layerIdx))
 
   return (
-    <section id="architecture" style={{ padding: '20vh 0', background: '#09090b', position: 'relative', overflow: 'hidden' }}>
+    <section id="architecture" style={{ padding: 'var(--space-section) 0', background: '#09090b', position: 'relative', overflow: 'hidden' }}>
       <div className="swiss-grid">
-        <div className="swiss-block-wide" style={{ marginBottom: '4rem', textAlign: 'center' }}>
+        <div className="swiss-block-wide" style={{ marginBottom: 'var(--space-element)', textAlign: 'center' }}>
           <motion.p 
             initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}}
             className="swiss-label"

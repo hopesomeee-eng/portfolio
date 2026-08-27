@@ -76,7 +76,7 @@ export function AboutSection() {
   const [activeEra, setActiveEra] = useState<typeof AboutConfig.timeline[0] | null>(null)
 
   return (
-    <section id="about" style={{ padding: '20vh 0 10vh 0', background: '#09090b', position: 'relative', zIndex: 10 }}>
+    <section id="about" style={{ padding: 'calc(var(--space-section) * 1.5) 0 var(--space-section) 0', background: '#09090b', position: 'relative', zIndex: 10 }}>
       <div className="swiss-grid" ref={ref}>
         
         {/* Left Column: Massive Philosophy Statement (Cols 1-7 on desktop) */}
@@ -86,8 +86,8 @@ export function AboutSection() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ ...hangingCardPhysics, delay: 0.1 }}
           >
-            <h2 className="swiss-label" style={{ marginBottom: '2rem' }}>{AboutConfig.label}</h2>
-            <h3 className="swiss-headline" style={{ fontSize: 'var(--text-h1)', lineHeight: 0.95, letterSpacing: '-0.04em', marginBottom: '3rem' }}>
+            <h2 className="swiss-label" style={{ marginBottom: 'var(--space-gap)' }}>{AboutConfig.label}</h2>
+            <h3 className="swiss-headline" style={{ fontSize: 'var(--text-h1)', lineHeight: 0.95, letterSpacing: '-0.04em', marginBottom: 'var(--space-element)' }}>
               {AboutConfig.heading}
             </h3>
           </motion.div>
@@ -115,7 +115,7 @@ export function AboutSection() {
         {/* Right Column: The Tactile Timeline Stack (Cols 8-13 on desktop) */}
         <div 
           className="swiss-phil-right"
-          style={{ marginTop: '4rem', position: 'relative' }}
+          style={{ marginTop: 'var(--space-section)', position: 'relative' }}
         >
           <motion.h4
             initial={{ opacity: 0 }}

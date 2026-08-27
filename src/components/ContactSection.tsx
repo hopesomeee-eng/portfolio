@@ -13,13 +13,13 @@ export function ContactSection() {
   const [copied, setCopied] = useState(false)
 
   const copyEmail = () => {
-    navigator.clipboard.writeText('sushant18072002@gmail.com')
+    navigator.clipboard.writeText('sushantkumar1807@gmail.com')
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
 
   return (
-    <section id="contact" style={{ padding: '20vh 0', background: '#09090b', position: 'relative' }}>
+    <section id="contact" style={{ padding: 'calc(var(--space-section) * 1.5) 0', background: '#09090b', position: 'relative' }}>
       <div className="global-spine" style={{ position: 'absolute', top: 0, bottom: 0, left: '50%', width: '1px', background: 'rgba(255,255,255,0.03)', zIndex: 0, pointerEvents: 'none' }} />
       <div className="swiss-grid" ref={ref}>
         <div className="swiss-block-wide" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
@@ -27,7 +27,7 @@ export function ContactSection() {
           <motion.p
             initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ type: 'spring', damping: 20, stiffness: 70 }}
-            style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: '3rem', color: '#f59e0b' }}
+            style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.25em', textTransform: 'uppercase', marginBottom: 'var(--space-element)', color: '#f59e0b' }}
           >
             06 / LET'S BUILD SOMETHING
           </motion.p>
@@ -41,7 +41,7 @@ export function ContactSection() {
               background: 'transparent',
               border: 'none',
               padding: 0,
-              fontSize: 'clamp(14px, 5vw, 64px)',
+              fontSize: 'var(--text-mega)',
               fontWeight: 900,
               letterSpacing: '-0.04em',
               lineHeight: 0.9,
@@ -62,7 +62,7 @@ export function ContactSection() {
               if (span) span.style.transform = 'scaleX(0)'
             }}
           >
-            {copied ? 'COPIED TO CLIPBOARD' : 'SUSHANT18072002.COM'}
+            {copied ? 'COPIED TO CLIPBOARD' : 'SUSHANTKUMAR1807@GMAIL.COM'}
             <span
               className="underline"
               style={{
@@ -85,12 +85,12 @@ export function ContactSection() {
           >
             <div 
               className="contact-socials"
-              style={{ marginTop: '10vh', fontSize: '13px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}
+              style={{ marginTop: 'var(--space-section)', fontSize: '13px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}
             >
-              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" style={{ color: '#f59e0b', textDecoration: 'none' }} data-cursor="link">Resume</a>
-              <a href="https://github.com/sushant18072002" target="_blank" rel="noopener noreferrer" style={{ color: '#fafafa', textDecoration: 'none' }} data-cursor="link">GitHub</a>
-              <a href="https://www.linkedin.com/in/connect-with-sushant/" target="_blank" rel="noopener noreferrer" style={{ color: '#fafafa', textDecoration: 'none' }} data-cursor="link">LinkedIn</a>
-              <a href="https://medium.com/@sushant18072002" target="_blank" rel="noopener noreferrer" style={{ color: '#fafafa', textDecoration: 'none' }} data-cursor="link">Medium</a>
+              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" style={{ color: '#f59e0b', textDecoration: 'none', minHeight: 'var(--tap-target-min)', display: 'flex', alignItems: 'center' }} data-cursor="link">Resume</a>
+              <a href="https://github.com/sushantkumar1807" target="_blank" rel="noopener noreferrer" style={{ color: '#fafafa', textDecoration: 'none', minHeight: 'var(--tap-target-min)', display: 'flex', alignItems: 'center' }} data-cursor="link">GitHub</a>
+              <a href="https://www.linkedin.com/in/connect-with-sushant/" target="_blank" rel="noopener noreferrer" style={{ color: '#fafafa', textDecoration: 'none', minHeight: 'var(--tap-target-min)', display: 'flex', alignItems: 'center' }} data-cursor="link">LinkedIn</a>
+              <a href="https://medium.com/@sushantkumar1807" target="_blank" rel="noopener noreferrer" style={{ color: '#fafafa', textDecoration: 'none', minHeight: 'var(--tap-target-min)', display: 'flex', alignItems: 'center' }} data-cursor="link">Medium</a>
             </div>
           </motion.div>
 

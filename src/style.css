@@ -19,10 +19,18 @@
   
   /* Typography Tokens (Precision Scale) */
   --text-hero:  clamp(48px, 7vw, 80px);
-  --text-mega:  clamp(22px, 8vw, 96px); /* For Contact section email */
+  --text-mega:  clamp(18px, 4.5vw, 64px); /* Scaled down for 26-char email to fit one line */
   --text-h1:    clamp(32px, 5vw, 56px);
   --text-h2:    clamp(24px, 3vw, 40px);
   --text-body:  clamp(16px, 1.2vw, 18px);
+
+  /* FLUID RHYTHM & SPACING (Fixes the scroll bug) */
+  --space-section: clamp(4rem, 12vw, 10rem);
+  --space-element: clamp(1.5rem, 3vw, 3rem);
+  --space-gap:     clamp(1rem, 2vw, 2rem);
+
+  /* FITTS'S LAW (Touch Targets) */
+  --tap-target-min: 48px;
 }
 
 /* ── Reset ── */
@@ -448,7 +456,7 @@ html, body {
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
+    /* scroll-snap-type removed to fix Lenis conflict */
     gap: 1.5rem;
     padding-bottom: 2rem;
     -webkit-overflow-scrolling: touch;
@@ -459,7 +467,7 @@ html, body {
   }
   .mobile-snap-scroll > * {
     flex: 0 0 85%;
-    scroll-snap-align: center;
+    /* scroll-snap-align removed */
     background: rgba(255,255,255,0.02);
     padding: 1.5rem;
     border-radius: 8px;
@@ -576,9 +584,6 @@ html, body {
 [data-cursor] {
   cursor: none;
 }
-
-/* Ensure Inter font loads */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 /* =====================================================
    SECTION TRANSITIONS — subtle fade as sections appear

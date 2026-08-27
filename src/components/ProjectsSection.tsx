@@ -103,10 +103,10 @@ export function ProjectsSection() {
 
   return (
     <>
-      <section id="projects" style={{ padding: '15vh 0', background: '#09090b', position: 'relative', zIndex: 10 }}>
+      <section id="projects" style={{ padding: 'var(--space-section) 0', background: '#09090b', position: 'relative', zIndex: 10 }}>
         <div className="swiss-grid" ref={ref}>
           
-          <div className="swiss-block-wide">
+          <div className="swiss-block-wide" style={{ marginBottom: 'var(--space-element)' }}>
             <motion.h2
               initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ type: 'spring', damping: 20, stiffness: 70 }}

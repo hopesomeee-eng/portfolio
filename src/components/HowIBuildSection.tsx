@@ -71,7 +71,7 @@ export function HowIBuildSection() {
   const [activeStep, setActiveStep] = useState<typeof HowIBuildConfig.steps[0] | null>(null)
   
   return (
-    <section id="how-i-build" style={{ padding: '15vh 0', background: '#09090b', position: 'relative' }}>
+    <section id="how-i-build" style={{ padding: 'var(--space-section) 0', background: '#09090b', position: 'relative' }}>
       <div className="swiss-grid" ref={containerRef}>
         {/* Left Column (Sticky) */}
         <div className="swiss-split-left" style={{ position: 'sticky', top: '25vh', alignSelf: 'start', paddingBottom: '10vh', willChange: 'transform' }}>

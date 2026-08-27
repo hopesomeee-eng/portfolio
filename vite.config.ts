@@ -48,5 +48,15 @@ export default defineConfig({
       'Cross-Origin-Opener-Policy': 'same-origin',
       'Cross-Origin-Embedder-Policy': 'require-corp',
     }
+  },
+  build: {
+    chunkSizeWarningLimit: 2000,
+    rollupOptions: {
+      onwarn(warning, defaultHandler) {
+        // Ignore sourcemap warnings from third-party libraries like framer-motion
+        if (warning.code === 'SOURCEMAP_ERROR') return
+        defaultHandler(warning)
+      }
+    }
   }
 })
