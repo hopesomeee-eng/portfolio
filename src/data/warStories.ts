@@ -68,13 +68,13 @@ I had to build a voice controller that understood both — and 7 other Indian la
   },
   6: {
     title: "The Architect",
-    tags: ["#SeniorDeveloper", "#FullStack", "#Mobile"],
+    tags: ["#SeniorDeveloper", "#FullStack", "#AgenticAI"],
     content: `## Sushant Kumar
 
-**Senior Flutter Developer & AI Infrastructure Architect**
-*4 Years Experience | 8+ Apps | 200,000+ Users*
+**Full Stack, Mobile & Agentic AI Engineer**
+*4 Years Experience | 8+ Apps | 10,00,000+ Users*
 
-Specializing in scalable architecture patterns, state management, and enterprise-grade security implementations. 
-Bridging the gap between hyper-optimized mobile clients (Flutter) and autonomous agent infrastructure (MCP).`
+Specializing in scalable full-stack architectures, offline-first mobile clients, and enterprise-grade security implementations. 
+Bridging the gap between high-concurrency cloud systems and autonomous agent infrastructure (MCP).`
   }
 }
