@@ -125,25 +125,25 @@ export default function App() {
         {/* R3F Canvas — fills the hero section */}
         {/* pointer-events: none so wheel events pass through to Lenis/page */}
         <div className="hero-canvas-wrapper" style={{ pointerEvents: 'none' }}>
-          <PerformanceMonitor 
-            onDecline={() => setPerformanceMode('eco')}
-            onIncline={() => setPerformanceMode('cinematic')}
-            flipflops={3}
-            onFallback={() => setPerformanceMode('eco')}
+          <Canvas
+            frameloop={isHeroVisible ? 'always' : 'demand'}
+            orthographic
+            camera={{ position: [0, 0, 1], zoom: 1 }}
+            dpr={performanceMode === 'eco' ? [1, 1] : [1, 2]}
+            gl={{ antialias: false, powerPreference: 'high-performance' }}
+            onCreated={() => setIsLoaded(true)}
           >
-            <Canvas
-              frameloop={isHeroVisible ? 'always' : 'demand'}
-              orthographic
-              camera={{ position: [0, 0, 1], zoom: 1 }}
-              dpr={performanceMode === 'eco' ? [1, 1] : [1, 2]}
-              gl={{ antialias: false, powerPreference: 'high-performance' }}
-              onCreated={() => setIsLoaded(true)}
+            <PerformanceMonitor 
+              onDecline={() => setPerformanceMode('eco')}
+              onIncline={() => setPerformanceMode('cinematic')}
+              flipflops={3}
+              onFallback={() => setPerformanceMode('eco')}
             >
               <Suspense fallback={null}>
                 <CinematicHero mouseRef={mouseRef} />
               </Suspense>
-            </Canvas>
-          </PerformanceMonitor>
+            </PerformanceMonitor>
+          </Canvas>
         </div>
 
         {/* Hero text overlay — bottom-left, compact */}
