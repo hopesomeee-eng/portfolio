@@ -41,6 +41,7 @@ import { ProjectsSection }    from './components/ProjectsSection'
 import { SkillsSection }      from './components/SkillsSection'
 import { BlogSection }        from './components/BlogSection'
 import { ContactSection }     from './components/ContactSection'
+import { SocialCardGenerator } from './components/SocialCardGenerator'
 
 import { usePortfolioStore } from './store'
 import './style.css'
@@ -48,6 +49,18 @@ import './style.css'
 gsap.registerPlugin(ScrollTrigger)
 
 export default function App() {
+  // Simple hash-based router for the hidden generator tool
+  const [hash, setHash] = useState(window.location.hash)
+
+  useEffect(() => {
+    const handleHashChange = () => setHash(window.location.hash)
+    window.addEventListener('hashchange', handleHashChange)
+    return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [])
+
+  if (hash === '#generator') {
+    return <SocialCardGenerator />
+  }
   const { isLoaded, setIsLoaded, performanceMode, setPerformanceMode } = usePortfolioStore()
   const mouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 })
   const [isHeroVisible, setIsHeroVisible] = useState(true)

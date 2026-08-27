@@ -23,13 +23,21 @@ export function ArchitectureSection() {
   
   // Store DOM nodes for coordinate math
   const nodeRefs = useRef<Map<string, HTMLDivElement>>(new Map())
-  const [paths, setPaths] = useState<{ id: string, d: string, color: string }[]>([])
+  const pathRefs = useRef<Map<string, SVGPathElement>>(new Map())
 
   const setNodeRef = useCallback((id: string) => (el: HTMLDivElement | null) => {
     if (el) {
       nodeRefs.current.set(id, el)
     } else {
       nodeRefs.current.delete(id)
+    }
+  }, [])
+
+  const setPathRef = useCallback((id: string) => (el: SVGPathElement | null) => {
+    if (el) {
+      pathRefs.current.set(id, el)
+    } else {
+      pathRefs.current.delete(id)
     }
   }, [])
 
@@ -47,24 +55,60 @@ export function ArchitectureSection() {
       const sRect = sourceEl.getBoundingClientRect()
       const tRect = targetEl.getBoundingClientRect()
 
-      // Calculate center points relative to the container
-      const startX = sRect.right - containerRect.left
-      const startY = sRect.top + sRect.height / 2 - containerRect.top
+      // Determine structural relationship
+      const isBackwards = sRect.left > tRect.right
+      const isSameColumn = Math.abs(sRect.left - tRect.left) < 50
+
+      let startX, startY, endX, endY, d;
+
+      if (isSameColumn) {
+        // Vertical connection (e.g., node to node in same column)
+        const isBelow = tRect.top > sRect.bottom
+        startX = sRect.left + sRect.width / 2 - containerRect.left
+        startY = (isBelow ? sRect.bottom : sRect.top) - containerRect.top
+        
+        endX = tRect.left + tRect.width / 2 - containerRect.left
+        endY = (isBelow ? tRect.top : tRect.bottom) - containerRect.top
+
+        const distanceY = Math.abs(endY - startY)
+        const cpOffset = distanceY * 0.4
+        const dir = isBelow ? 1 : -1
+
+        d = `M ${startX} ${startY} C ${startX} ${startY + cpOffset * dir}, ${endX} ${endY - cpOffset * dir}, ${endX} ${endY}`
+      } else if (isBackwards) {
+        // Feedback loop (goes out bottom, loops under, comes in bottom)
+        startX = sRect.left + sRect.width / 2 - containerRect.left
+        startY = sRect.bottom - containerRect.top
+        
+        endX = tRect.left + tRect.width / 2 - containerRect.left
+        endY = tRect.bottom - containerRect.top
+
+        const distanceX = Math.abs(startX - endX)
+        const cpOffsetY = Math.max(80, distanceX * 0.25) // Drop down significantly
+        
+        d = `M ${startX} ${startY} C ${startX} ${startY + cpOffsetY}, ${endX} ${endY + cpOffsetY}, ${endX} ${endY}`
+      } else {
+        // Normal left-to-right connection
+        startX = sRect.right - containerRect.left
+        startY = sRect.top + sRect.height / 2 - containerRect.top
+        
+        endX = tRect.left - containerRect.left
+        endY = tRect.top + tRect.height / 2 - containerRect.top
+
+        const distanceX = Math.abs(endX - startX)
+        const cpOffset = distanceX * 0.4
+
+        d = `M ${startX} ${startY} C ${startX + cpOffset} ${startY}, ${endX - cpOffset} ${endY}, ${endX} ${endY}`
+      }
+
+      // 60FPS Direct DOM Mutation (Zero-cost, bypasses React)
+      const connId = `${conn.source}-${conn.target}`
+      const bgPath = pathRefs.current.get(`bg-${connId}`)
+      const fgPath = pathRefs.current.get(`fg-${connId}`)
       
-      const endX = tRect.left - containerRect.left
-      const endY = tRect.top + tRect.height / 2 - containerRect.top
-
-      // Horizontal distance for control points
-      const distance = Math.abs(endX - startX)
-      const cpOffset = distance * 0.4
-
-      // Cubic bezier curve path
-      const d = `M ${startX} ${startY} C ${startX + cpOffset} ${startY}, ${endX - cpOffset} ${endY}, ${endX} ${endY}`
-
-      return { id: `${conn.source}-${conn.target}`, d, color: conn.color }
-    }).filter(Boolean) as { id: string, d: string, color: string }[]
-
-    setPaths(newPaths)
+      if (bgPath) bgPath.setAttribute('d', d)
+      if (fgPath) fgPath.setAttribute('d', d)
+    })
   }, [activeArch])
 
   // Use ResizeObserver and a high-frequency tracking loop for perfect SVG syncing
@@ -172,60 +216,75 @@ export function ArchitectureSection() {
         </div>
 
         {/* The Interactive Canvas */}
-        <div className="swiss-block-wide" style={{ position: 'relative', minHeight: '500px', display: 'flex', alignItems: 'stretch', background: 'rgba(255,255,255,0.01)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }} ref={containerRef}>
+        <div className="swiss-block-wide" style={{ background: 'rgba(255,255,255,0.01)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)', overflow: 'hidden' }}>
           
-          {/* SVG Overlay for Connections & Live Data Packets */}
-          <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0 }}>
+          {/* Scrollable Viewport for Mobile */}
+          <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', width: '100%' }}>
+             
+             {/* The Actual Canvas Grid (Expands to fit content) */}
+             <div ref={containerRef} style={{ position: 'relative', minHeight: '500px', minWidth: `${Math.max(100, layers.length * 280)}px`, display: 'flex', alignItems: 'stretch', margin: 0, padding: 0 }}>
+               
+               {/* SVG Overlay for Connections & Live Data Packets */}
+               <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0, overflow: 'visible' }}>
             <AnimatePresence>
-              {paths.map((path, i) => (
-                <g key={`${activeId}-${path.id}`}>
-                  {/* Background Track */}
-                  <motion.path
-                    d={path.d}
-                    fill="none"
-                    stroke="rgba(255,255,255,0.05)"
-                    strokeWidth="2"
-                    initial={{ pathLength: 0, opacity: 0 }}
-                    animate={{ pathLength: 1, opacity: 1 }}
+              {activeArch.connections.map((conn, i) => {
+                const connId = `${conn.source}-${conn.target}`
+                return (
+                  <motion.g 
+                    key={`${activeId}-${connId}`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 1, ease: "easeInOut", delay: i * 0.05 }}
-                  />
-                  
-                  {/* Glowing Active Path */}
-                  <motion.path
-                    d={path.d}
-                    fill="none"
-                    stroke={path.color}
-                    strokeWidth="2"
-                    initial={{ pathLength: 0, opacity: 0 }}
-                    animate={{ pathLength: 1, opacity: [0.2, 0.5, 0.2] }}
-                    exit={{ opacity: 0 }}
-                    transition={{ 
-                      pathLength: { duration: 1, ease: "easeInOut", delay: i * 0.05 },
-                      opacity: { repeat: Infinity, duration: 2 + i, ease: "linear" }
-                    }}
-                  />
-
-                  {/* Animated Data Packet (Circle traveling along path) */}
-                  <circle r="4" fill={path.color} style={{ filter: `drop-shadow(0 0 6px ${path.color})` }}>
-                    <animateMotion 
-                      dur={`${2 + Math.random() * 2}s`} 
-                      repeatCount="indefinite"
-                      path={path.d}
-                      keyPoints="0;1"
-                      keyTimes="0;1"
-                      calcMode="linear"
+                    transition={{ duration: 0.4 }}
+                  >
+                    {/* Background Track */}
+                    <motion.path
+                      id={`path-${activeId}-${connId}`}
+                      ref={setPathRef(`bg-${connId}`)}
+                      fill="none"
+                      stroke="rgba(255,255,255,0.05)"
+                      strokeWidth="2"
+                      initial={{ pathLength: 0 }}
+                      animate={{ pathLength: 1 }}
+                      transition={{ duration: 1, ease: "easeInOut", delay: i * 0.05 }}
                     />
-                  </circle>
-                </g>
-              ))}
+                    
+                    {/* Glowing Active Path */}
+                    <motion.path
+                      ref={setPathRef(`fg-${connId}`)}
+                      fill="none"
+                      stroke={conn.color}
+                      strokeWidth="2"
+                      initial={{ pathLength: 0, opacity: 0 }}
+                      animate={{ pathLength: 1, opacity: [0.2, 0.5, 0.2] }}
+                      transition={{ 
+                        pathLength: { duration: 1, ease: "easeInOut", delay: i * 0.05 },
+                        opacity: { repeat: Infinity, duration: 2 + i, ease: "linear" }
+                      }}
+                    />
+
+                    {/* Animated Data Packet (Circle traveling along path) */}
+                    <circle r="4" fill={conn.color} style={{ filter: `drop-shadow(0 0 6px ${conn.color})` }}>
+                      <animateMotion 
+                        dur={`${2 + Math.random() * 2}s`} 
+                        repeatCount="indefinite"
+                        keyPoints="0;1"
+                        keyTimes="0;1"
+                        calcMode="linear"
+                      >
+                        <mpath href={`#path-${activeId}-${connId}`} />
+                      </animateMotion>
+                    </circle>
+                  </motion.g>
+                )
+              })}
             </AnimatePresence>
           </svg>
 
           {/* HTML Nodes Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: `repeat(${layers.length}, minmax(180px, 1fr))`, gap: '2rem', width: '100%', padding: '2rem', position: 'relative', zIndex: 10 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: `repeat(${layers.length}, minmax(240px, 1fr))`, gap: '3rem', width: '100%', padding: '3rem 2rem', position: 'relative', zIndex: 10 }}>
             {layers.map((layerNodes, lIdx) => (
-              <div key={`${activeId}-layer-${lIdx}`} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '3rem' }}>
+              <div key={`layer-${lIdx}`} style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '3rem' }}>
                 <AnimatePresence mode="popLayout">
                   {layerNodes.map((node, nIdx) => (
                     <motion.div
@@ -262,7 +321,10 @@ export function ArchitectureSection() {
               </div>
             ))}
           </div>
+          
         </div>
+      </div>
+      </div>
 
         {/* The In-Depth Planning Article */}
         <div className="swiss-block-wide" style={{ marginTop: '4rem', padding: '0 1rem' }}>

@@ -49,16 +49,16 @@ export const ProjectsConfig = {
       link: '#',
       tagline: 'Engineered for extreme latency. Utilizing Dart Isolates and SQLite for deterministic offline sync.',
       tags: ['Flutter', 'Isolates', 'CRDTs', 'SQLite', 'AWS'],
-      metric: '2,00,000+ DAU',
+      metric: '10,00,000+ DAU',
       story: {
-        problem:     'A massive deployment (200,000+ users) operating on degrading 2G/3G networks across rural India. A standard network-first REST architecture caused catastrophic UI blocking and massive data loss during sync failures.',
+        problem:     'A massive deployment (1,000,000+ users) operating on degrading 2G/3G networks across rural India. A standard network-first REST architecture caused catastrophic UI blocking and massive data loss during sync failures.',
         research:    'Investigated Conflict-Free Replicated Data Types (CRDTs), Last-Write-Wins (LWW) conflict resolution algorithms, and SQLite Write-Ahead Logging (WAL) for high-concurrency local writes.',
         techChoice:  'Flutter for the view layer, backed by a strict offline-first repository pattern. AWS API Gateway and RDS for the distributed cloud store. Avoided Firebase to maintain strict relational data integrity.',
         architecture:'Flutter UI ↔ Local SQLite (Source of Truth) ↔ Background Dart Isolate (Sync Queue) ↔ AWS Gateway. The UI never awaits a network request.',
         challenge:   'Preventing main-thread jank (skipped frames) during massive batch inserts to SQLite while the background sync queue processed hundreds of queued mutations.',
         testing:     'Network conditioning using Charles Proxy to simulate 90% packet loss and 5000ms latency. Profiled the UI thread to guarantee strict 60FPS rendering under load.',
         deploy:      'Deployed via state procurement MDMs (Mobile Device Management) with Over-The-Air (OTA) binary patching.',
-        impact:      'Achieved a 99.8% sync success rate across wildly unstable networks, supporting 200,000+ Daily Active Users with zero perceived latency.',
+        impact:      'Achieved a 99.8% sync success rate across wildly unstable networks, supporting 1,000,000+ Daily Active Users with zero perceived latency.',
       }
     },
     {
